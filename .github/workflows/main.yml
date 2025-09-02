@@ -23,9 +23,25 @@ jobs:
       - name: Run Eslint
         run: npm run lint
 
-  build:
+  codeql:
     runs-on: ubuntu-latest
     needs: [lint]
+    permissions:
+      security-events: write
+      actions: read #ใช้เพื่อให้ job นี้มีสิทธิ์ดึงข้อมูลของ GitHub Actions (เช่น workflow runs, job details, logs)
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Initialize codeql
+        uses: github/codeql-action/init@v4
+        with:
+          languages: javascript-typescript
+      - name: Perform codeql analysis
+        uses: github/codeql-action/analyze@v3
+
+  build:
+    runs-on: ubuntu-latest
+    needs: [lint,codeql]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
