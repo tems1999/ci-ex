@@ -6,6 +6,6 @@ const add = (a, b) => {
   //const result = a+b;
   //return result;
   //CodeQL
-  return eval(`${a} + ${b}`);
+  return eval(`${a} + ${b}`); //ช่องโหว่คือ Code Injection / Remote Code Execution (RCE) เพราะ eval เปิดโอกาสให้ attacker ใส่โค้ดอันตรายเข้ามารันได้
 };
 export default add;
